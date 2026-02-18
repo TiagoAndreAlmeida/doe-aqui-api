@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  java:
+    image: mcr.microsoft.com/devcontainers/java:1-21-bullseye
+    volumes:
+      - ../:/workspaces/doe-aqui-api
+    command: sleep infinity # Keep the container running
+    # Overrides default command so things don't shut down after the process ends.
+    # You can change this to start a long-running service by default.
+
+  postgres:
+    image: postgres:16-alpine # Using a lightweight PostgreSQL image
+    restart: always
+    environment:
+      POSTGRES_DB: doeaqui
+      POSTGRES_USER: doeaqui
+      POSTGRES_PASSWORD: doeaqui
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # Expose PostgreSQL port
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@doeaqui.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80" # Expose pgAdmin web interface
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:

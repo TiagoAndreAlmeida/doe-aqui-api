@@ -2,8 +2,9 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/java
 {
 	"name": "Java",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/java:1-21-bullseye",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "java",
+	"workspaceFolder": "/workspaces/doe-aqui-api",
 
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
@@ -13,8 +14,7 @@
 		}
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [5432, 8080],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "java -version",
