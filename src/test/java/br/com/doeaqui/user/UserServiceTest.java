@@ -1,0 +1,73 @@
+package br.com.doeaqui.user;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserService userService;
+
+    @Test
+    @DisplayName("Deve instanciar o serviço corretamente")
+    void shouldInstantiateService() {
+        assertThat(userService).isNotNull();
+        assertThat(userService).isExactlyInstanceOf(UserService.class);
+    }
+
+    @Test
+    @DisplayName("Deve criar um usuário com sucesso quando o e-mail não existe")
+    void shouldCreateUserWithSuccess() {
+        // Arrange
+        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999");
+        when(userRepository.existsByEmail(request.email())).thenReturn(false);
+        
+        UserEntity expectedUser = new UserEntity(1L, request.name(), request.email(), request.phone());
+        when(userRepository.save(any(UserEntity.class))).thenReturn(expectedUser);
+
+        // Act
+        UserEntity createdUser = userService.create(request);
+
+        // Assert
+        assertThat(createdUser).isNotNull();
+        assertThat(createdUser.getId()).isEqualTo(1L);
+        assertThat(createdUser.getName()).isEqualTo(request.name());
+        verify(userRepository).existsByEmail(request.email());
+        verify(userRepository).save(any(UserEntity.class));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao tentar criar usuário com e-mail já cadastrado")
+    void shouldThrowExceptionWhenEmailAlreadyExists() {
+        // Arrange
+        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "");
+        when(userRepository.existsByEmail(request.email())).thenReturn(true);
+
+        // Act & Assert
+        assertThatThrownBy(() -> userService.create(request))
+            .isInstanceOf(RuntimeException.class)
+            .hasMessage("E-mail já cadastrado");
+
+        verify(userRepository).existsByEmail(request.email());
+        verify(userRepository, never()).save(any(UserEntity.class));
+    }
+}
