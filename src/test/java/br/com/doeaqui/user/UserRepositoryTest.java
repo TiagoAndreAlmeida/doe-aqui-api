@@ -65,4 +65,27 @@ public class UserRepositoryTest {
         assertThat(foundUser.getName()).isEqualTo("Usuário Busca");
         assertThat(foundUser.getEmail()).isEqualTo("busca@email.com");
     }
+
+    @Test
+    @DisplayName("Deve retornar true quando o e-mail existir")
+    void shouldReturnTrueWhenEmailExists() {
+        String email = "existente@email.com";
+        UserEntity user = new UserEntity(null, "Teste", email, "");
+        entityManager.persist(user);
+        entityManager.flush();
+
+        boolean exists = userRepository.existsByEmail(email);
+
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    @DisplayName("Deve retornar false quando o e-mail não existir")
+    void shouldReturnFalseWhenEmailDoesNotExist() {
+        String email = "inexistente@email.com";
+
+        boolean exists = userRepository.existsByEmail(email);
+
+        assertThat(exists).isFalse();
+    }
 }
