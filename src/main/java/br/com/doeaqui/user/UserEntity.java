@@ -30,6 +30,8 @@ public class UserEntity {
         this.phone = phone;
     }
 
+    protected UserEntity() {}
+
     public Long getId() {
         return id;
     }
