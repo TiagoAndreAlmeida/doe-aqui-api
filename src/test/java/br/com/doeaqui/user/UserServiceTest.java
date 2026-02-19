@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ class UserServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> userService.create(request))
-            .isInstanceOf(RuntimeException.class)
+            .isInstanceOf(EmailAlreadyExistsException.class)
             .hasMessage("E-mail já cadastrado");
 
         verify(userRepository).existsByEmail(request.email());
