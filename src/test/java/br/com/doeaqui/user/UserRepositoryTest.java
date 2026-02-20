@@ -24,7 +24,7 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("Deve salvar um usuário com sucesso")
     void shouldSaveUser() {
-        UserEntity user = new UserEntity(null, "João Silva", "joao@email.com", "11999999999");
+        UserEntity user = new UserEntity(null, "João Silva", "joao@email.com", "11999999999", "senha", false);
         UserEntity savedUser = userRepository.save(user);
 
         assertThat(savedUser.getId()).isNotNull();
@@ -36,12 +36,12 @@ public class UserRepositoryTest {
     @DisplayName("Não deve permitir salvar dois usuários com o mesmo e-mail")
     void shouldNotSaveDuplicateEmail() {
         // Cenário: Já existe um usuário com este e-mail no banco
-        UserEntity user1 = new UserEntity(null, "Primeiro Usuário", "repetido@email.com", "");
+        UserEntity user1 = new UserEntity(null, "Primeiro Usuário", "repetido@email.com", "", "senha", false);
         entityManager.persist(user1);
         entityManager.flush();
 
         // Ação: Tentar salvar outro usuário com o mesmo e-mail
-        UserEntity user2 = new UserEntity(null, "Segundo Usuário", "repetido@email.com", "");
+        UserEntity user2 = new UserEntity(null, "Segundo Usuário", "repetido@email.com", "", "senha", false);
 
         // Verificação: Deve lançar DataIntegrityViolationException devido à constraint UNIQUE
         assertThrows(DataIntegrityViolationException.class, () -> {
@@ -53,7 +53,7 @@ public class UserRepositoryTest {
     @Test
     @DisplayName("Deve buscar um usuário pelo ID (Este teste deve falhar sem o construtor vazio)")
     void shouldFindUserById() {
-        UserEntity user = new UserEntity(null, "Usuário Busca", "busca@email.com", "");
+        UserEntity user = new UserEntity(null, "Usuário Busca", "busca@email.com", "", "senha", true);
         UserEntity savedUser = userRepository.save(user);
         
         // Sincroniza com o banco e depois limpa a memória
@@ -70,7 +70,7 @@ public class UserRepositoryTest {
     @DisplayName("Deve retornar true quando o e-mail existir")
     void shouldReturnTrueWhenEmailExists() {
         String email = "existente@email.com";
-        UserEntity user = new UserEntity(null, "Teste", email, "");
+        UserEntity user = new UserEntity(null, "Teste", email, "", "", true);
         entityManager.persist(user);
         entityManager.flush();
 

@@ -15,5 +15,8 @@ public record CreateUserRequest(
     String email,
 
     @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres")
-    String phone
+    String phone,
+
+    @Size(min = 6, message = "A senha precisa ter no minímo 6 caracteres")
+    String password
 ) {}

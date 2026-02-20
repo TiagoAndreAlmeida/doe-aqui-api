@@ -39,10 +39,10 @@ class UserServiceTest {
     @DisplayName("Deve criar um usuário com sucesso quando o e-mail não existe")
     void shouldCreateUserWithSuccess() {
         // Arrange
-        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999", "senha");
         when(userRepository.existsByEmail(request.email())).thenReturn(false);
         
-        UserEntity expectedUser = new UserEntity(1L, request.name(), request.email(), request.phone());
+        UserEntity expectedUser = new UserEntity(1L, request.name(), request.email(), request.phone(), request.password(), true);
         when(userRepository.save(any(UserEntity.class))).thenReturn(expectedUser);
 
         // Act
@@ -60,7 +60,7 @@ class UserServiceTest {
     @DisplayName("Deve lançar exceção ao tentar criar usuário com e-mail já cadastrado")
     void shouldThrowExceptionWhenEmailAlreadyExists() {
         // Arrange
-        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "", "senha");
         when(userRepository.existsByEmail(request.email())).thenReturn(true);
 
         // Act & Assert

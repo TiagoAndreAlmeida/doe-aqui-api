@@ -1,5 +1,12 @@
 package br.com.doeaqui.user;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,20 +21,40 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column(nullable = false)
+    private Boolean inactive = false;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(nullable = false, length = 255)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
     @Column(nullable = false, length = 20)
     private String phone = "";
 
-    public UserEntity(Long id, String name, String email, String phone) {
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    public UserEntity(
+        Long id, String name, String email, String phone, String password,
+        Boolean inactive
+    ) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.inactive = inactive;
+        this.password = password;
     }
 
     protected UserEntity() {}
@@ -64,5 +91,28 @@ public class UserEntity {
         this.phone = phone;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Boolean getInactive() {
+        return inactive;
+    }
+
+    public void setInativo(Boolean inactive) {
+        this.inactive = inactive;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
 }

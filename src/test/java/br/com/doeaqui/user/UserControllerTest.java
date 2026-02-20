@@ -36,8 +36,8 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar 201 ao criar usuário com sucesso")
     void shouldReturn201WhenCreateUserIsSuccessful() throws Exception {
-        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999");
-        UserEntity savedUser = new UserEntity(1L, "Tiago", "tiago@email.com", "11999999999");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999", "senhagrande");
+        UserEntity savedUser = new UserEntity(1L, "Tiago", "tiago@email.com", "11999999999", "senhagrande", true);
 
         when(userService.create(any(CreateUserRequest.class))).thenReturn(savedUser);
 
@@ -53,7 +53,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar 400 quando os dados de entrada forem inválidos")
     void shouldReturn400WhenInputIsInvalid() throws Exception {
-        CreateUserRequest request = new CreateUserRequest("", "email-invalido", "");
+        CreateUserRequest request = new CreateUserRequest("", "email-invalido", "", "senha");
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Deve retornar 409 quando o e-mail já existir")
     void shouldReturn409WhenEmailAlreadyExists() throws Exception {
-        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "", "senhaalizada");
 
         when(userService.create(any(CreateUserRequest.class)))
             .thenThrow(new EmailAlreadyExistsException("E-mail já cadastrado"));

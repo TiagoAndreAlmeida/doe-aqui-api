@@ -24,7 +24,9 @@ public class UserService {
             null,
             request.name(),
             request.email(),
-            request.phone() == null ? "" : request.phone()
+            request.phone() == null ? "" : request.phone(),
+            "implementar hash de senha",
+            true
         );
 
         return userRepository.save(user);
