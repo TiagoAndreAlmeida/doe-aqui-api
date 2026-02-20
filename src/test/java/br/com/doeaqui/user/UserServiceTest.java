@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -24,6 +25,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -39,10 +43,11 @@ class UserServiceTest {
     @DisplayName("Deve criar um usuário com sucesso quando o e-mail não existe")
     void shouldCreateUserWithSuccess() {
         // Arrange
-        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999", "senha");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999", "senha123");
         when(userRepository.existsByEmail(request.email())).thenReturn(false);
+        when(passwordEncoder.encode(any(String.class))).thenReturn("hash_senha");
         
-        UserEntity expectedUser = new UserEntity(1L, request.name(), request.email(), request.phone(), request.password(), true);
+        UserEntity expectedUser = new UserEntity(1L, request.name(), request.email(), request.phone(), "hash_senha", false);
         when(userRepository.save(any(UserEntity.class))).thenReturn(expectedUser);
 
         // Act
@@ -53,6 +58,7 @@ class UserServiceTest {
         assertThat(createdUser.getId()).isEqualTo(1L);
         assertThat(createdUser.getName()).isEqualTo(request.name());
         verify(userRepository).existsByEmail(request.email());
+        verify(passwordEncoder).encode(request.password());
         verify(userRepository).save(any(UserEntity.class));
     }
 
@@ -60,7 +66,7 @@ class UserServiceTest {
     @DisplayName("Deve lançar exceção ao tentar criar usuário com e-mail já cadastrado")
     void shouldThrowExceptionWhenEmailAlreadyExists() {
         // Arrange
-        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "", "senha");
+        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "", "senha123");
         when(userRepository.existsByEmail(request.email())).thenReturn(true);
 
         // Act & Assert
