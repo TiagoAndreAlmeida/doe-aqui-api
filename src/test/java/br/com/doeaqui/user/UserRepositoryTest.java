@@ -3,6 +3,8 @@ package br.com.doeaqui.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +89,29 @@ public class UserRepositoryTest {
         boolean exists = userRepository.existsByEmail(email);
 
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    @DisplayName("Deve retornar usuário quando e-mail existir")
+    void shouldReturnUserWhenEmailExist() {
+        String email = "existence@email.com";
+        UserEntity user = new UserEntity(null, "Teste", email, "", "", true);
+        entityManager.persist(user);
+        entityManager.flush();
+
+        Optional<UserEntity> result = userRepository.findByEmail(email);
+        
+        assertThat(result).isPresent();
+        assertThat(result.get().getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    @DisplayName("Deve retornar vazio quando o e-mail não existir")
+    void shouldReturnEmptyWhenEmailDoesNotExist() {
+        String email = "naoexistente@email.com";
+
+        Optional<UserEntity> result = userRepository.findByEmail(email);
+        
+        assertThat(result).isEmpty();
     }
 }
