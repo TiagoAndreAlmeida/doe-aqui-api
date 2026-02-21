@@ -40,6 +40,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).body(error);
     }
 
+    @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(org.springframework.security.core.AuthenticationException ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+            org.springframework.http.HttpStatus.UNAUTHORIZED.value(),
+            "E-mail ou senha inválidos",
+            LocalDateTime.now(),
+            request.getRequestURI()
+        );
+        return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).body(error);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(

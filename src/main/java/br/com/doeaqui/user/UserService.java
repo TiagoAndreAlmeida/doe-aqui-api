@@ -5,6 +5,8 @@ import br.com.doeaqui.user.dto.request.CreateUserRequest;
 import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.dto.response.LoginResponse;
 import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
+import br.com.doeaqui.user.exception.InactiveUserException;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public LoginResponse authenticate(LoginRequest request) {
         UserEntity user = findByEmail(request.email());
+
+        if (user.getInactive()) {
+            throw new InactiveUserException("Conta inátiva, valide sua conta ou entre em contado com o suporte");
+        }
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new BadCredentialsException("E-mail ou senha inválidos");
