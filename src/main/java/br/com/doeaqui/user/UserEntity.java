@@ -1,17 +1,22 @@
 package br.com.doeaqui.user;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import br.com.doeaqui.product.ProductEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +41,12 @@ public class UserEntity {
 
     @Column(nullable = false, length = 20)
     private String phone = "";
+
+    @OneToMany(mappedBy = "donor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> donatedProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver")
+    private List<ProductEntity> receivedProducts = new ArrayList<>();
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -114,5 +125,20 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public List<ProductEntity> getDonatedProducts() {
+        return donatedProducts;
+    }
+
+    public void setDonatedProducts(List<ProductEntity> donatedProducts) {
+        this.donatedProducts = donatedProducts;
+    }
+
+    public List<ProductEntity> getReceivedProducts() {
+        return receivedProducts;
+    }
+
+    public void setReceivedProducts(List<ProductEntity> receivedProducts) {
+        this.receivedProducts = receivedProducts;
+    }
 }
