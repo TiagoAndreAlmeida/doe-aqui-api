@@ -7,11 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
 
-import br.com.doeaqui.config.SecurityConfig;
-import br.com.doeaqui.exception.GlobalExceptionHandler;
-import br.com.doeaqui.user.dto.request.CreateUserRequest;
-import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.doeaqui.config.SecurityConfig;
+import br.com.doeaqui.config.JwtService;
+import br.com.doeaqui.exception.GlobalExceptionHandler;
+import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
 
 @WebMvcTest(UserController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
@@ -30,6 +33,9 @@ class UserControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private JwtService jwtService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
