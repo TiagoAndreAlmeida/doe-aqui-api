@@ -2,8 +2,10 @@ package br.com.doeaqui.user;
 
 import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.dto.response.LoginResponse;
+import br.com.doeaqui.user.dto.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +25,21 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserEntity> me() {
-        UserEntity user = (UserEntity) org.springframework.security.core.context.SecurityContextHolder
-            .getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> me() {
+        UserEntity principal = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        UserEntity user = userService.findByEmail(principal.getEmail());
+        
+        UserResponse response = new UserResponse(
+            user.getId(),
+            user.getName(),
+            user.getEmail(),
+            user.getPhone(),
+            user.getInactive(),
+            user.getCreatedAt(),
+            user.getUpdatedAt()
+        );
+        
+        return ResponseEntity.ok(response);
     }
 }

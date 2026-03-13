@@ -83,7 +83,7 @@ public class AuthControllerTest {
     void shouldReturn200WhenAccessingMeWithValidToken() throws Exception {
         String token = "valid-token";
         String email = "user@email.com";
-        UserEntity user = new UserEntity(1L, "User", email, "", "hash", false);
+        UserEntity user = new UserEntity(1L, "User", email, "11999999999", "hash", false);
 
         when(jwtService.getSubject(token)).thenReturn(email);
         when(userService.findByEmail(email)).thenReturn(user);
@@ -91,7 +91,11 @@ public class AuthControllerTest {
         mockMvc.perform(get("/auth/me")
                 .header("Authorization", "Bearer " + token))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
             .andExpect(jsonPath("$.email").value(email))
-            .andExpect(jsonPath("$.name").value("User"));
+            .andExpect(jsonPath("$.name").value("User"))
+            .andExpect(jsonPath("$.phone").value("11999999999"))
+            .andExpect(jsonPath("$.inactive").value(false))
+            .andExpect(jsonPath("$.password").doesNotExist());
     }
 }

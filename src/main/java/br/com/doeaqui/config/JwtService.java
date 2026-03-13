@@ -42,4 +42,13 @@ public class JwtService {
                 .getPayload()
                 .getSubject();
     }
+
+    public Long getUserId(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("id", Long.class);
+    }
 }

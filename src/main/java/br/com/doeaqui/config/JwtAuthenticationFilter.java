@@ -1,7 +1,6 @@
 package br.com.doeaqui.config;
 
 import br.com.doeaqui.user.UserEntity;
-import br.com.doeaqui.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +16,9 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserService userService;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
+    public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
-        this.userService = userService;
     }
 
     @Override
@@ -33,12 +30,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null) {
             try {
                 String email = jwtService.getSubject(token);
-                UserEntity user = userService.findByEmail(email);
+                Long userId = jwtService.getUserId(token);
+
+                // Criamos um UserEntity "leve" sem ir ao banco de dados (Stateless)
+                // Usando o construtor protegido e setters para os campos mínimos
+                UserEntity user = new UserEntity(userId, null, email, null, null, null);
 
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (Exception e) {
-                // Se o token for inválido, não autenticamos, o Spring Security barrará nas rotas protegidas
+                // Se o token for inválido, não autenticamos
             }
         }
 
