@@ -62,6 +62,17 @@ public class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("Deve permitir acesso público aos detalhes de um produto")
+    void shouldAllowPublicAccessToProductDetails() throws Exception {
+        ProductResponse response = new ProductResponse(1L, "Título", "Desc", ConditionStatus.NEW, DonationStatus.AVAILABLE, new UserSummaryResponse("Doador", "119999"), LocalDateTime.now());
+        when(productService.findById(1L)).thenReturn(response);
+
+        mockMvc.perform(get("/products/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value("Título"));
+    }
+
+    @Test
     @DisplayName("Deve retornar 403 ao tentar criar produto sem token")
     void shouldReturn403WhenCreatingProductWithoutToken() throws Exception {
         CreateProductRequest request = new CreateProductRequest("Título", "Desc", ConditionStatus.NEW);
