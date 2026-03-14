@@ -5,7 +5,7 @@ import br.com.doeaqui.user.dto.response.LoginResponse;
 import br.com.doeaqui.user.dto.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,9 +25,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> me() {
-        UserEntity principal = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
+    public ResponseEntity<UserResponse> me(@AuthenticationPrincipal UserEntity principal) {
         UserEntity user = userService.findByEmail(principal.getEmail());
         
         UserResponse response = new UserResponse(
