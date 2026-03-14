@@ -6,6 +6,7 @@ import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.dto.response.LoginResponse;
 import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
 import br.com.doeaqui.user.exception.InactiveUserException;
+import br.com.doeaqui.user.exception.UserNotFoundException;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,13 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public LoginResponse authenticate(LoginRequest request) {
-        UserEntity user = findByEmail(request.email());
+        UserEntity user;
+        try {
+            user = findByEmail(request.email());
+        } catch (UserNotFoundException e) {
+            // Se o e-mail não existir, tratamos como erro de credenciais (401) por segurança
+            throw new BadCredentialsException("E-mail ou senha inválidos");
+        }
 
         if (user.getInactive()) {
             throw new InactiveUserException("Conta inátiva, valide sua conta ou entre em contado com o suporte");
@@ -44,7 +51,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
     }
 
     @Transactional
