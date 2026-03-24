@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import br.com.doeaqui.category.SubCategoryEntity;
 import br.com.doeaqui.product.enums.ConditionStatus;
 import br.com.doeaqui.product.enums.DonationStatus;
 import br.com.doeaqui.user.UserEntity;
@@ -48,6 +49,10 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private UserEntity receiver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subcategory_id", nullable = false)
+    private SubCategoryEntity subcategory;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
