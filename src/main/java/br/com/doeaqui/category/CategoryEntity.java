@@ -38,4 +38,58 @@ public class CategoryEntity {
     @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public CategoryEntity(long id, String name, String slug) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+    }
+
+    public CategoryEntity(String name, String slug) {
+        this.name = name;
+        this.slug = slug;
+    }
+
+    protected CategoryEntity() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public List<SubCategoryEntity> getSubcategories() {
+        return subcategories;
+    }
+
+    public void setSubcategories(List<SubCategoryEntity> subcategories) {
+        this.subcategories = subcategories;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
