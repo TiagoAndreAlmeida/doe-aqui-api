@@ -137,4 +137,12 @@ public class ProductEntity {
     public void setReceiver(UserEntity receiver) {
         this.receiver = receiver;
     }
+
+    public SubCategoryEntity getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(SubCategoryEntity subcategory) {
+        this.subcategory = subcategory;
+    }
 }
