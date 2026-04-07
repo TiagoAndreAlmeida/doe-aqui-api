@@ -22,7 +22,7 @@ O projeto foi construído com o que há de mais moderno no ecossistema Java:
 
 ## 🏗️ Arquitetura e Modelagem
 
-O sistema foi modelado seguindo os princípios de **Clean Architecture** e **Domain-Driven Design (DDD)** simplificado, organizado por pacotes de domínio (`user`, `product`).
+O sistema segue uma **Arquitetura em Camadas (Layered Architecture)** organizada por **Pacotes por Funcionalidade (Package-by-Feature)** como `user`, `product` e `category`. Essa abordagem facilita a localização de componentes relacionados a uma mesma regra de negócio.
 
 ### 1. Camada de Domínio e Persistência
 As entidades (`UserEntity`, `ProductEntity`) utilizam mapeamento JPA. Destacamos o relacionamento entre Usuário e Produto, onde um usuário pode ser **Doador** ou **Recebedor** de múltiplos itens.
