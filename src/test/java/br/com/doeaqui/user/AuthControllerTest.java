@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.doeaqui.config.SecurityConfig;
 import br.com.doeaqui.exception.GlobalExceptionHandler;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.user.dto.request.LoginRequest;
 
 import static org.mockito.ArgumentMatchers.any;

@@ -1,8 +1,9 @@
 package br.com.doeaqui.user;
 
+import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserResponse;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.dto.response.LoginResponse;
-import br.com.doeaqui.user.dto.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,10 +26,10 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> me(@AuthenticationPrincipal UserEntity principal) {
+    public ResponseEntity<CreateUserResponse> me(@AuthenticationPrincipal UserEntity principal) {
         UserEntity user = userService.findByEmail(principal.getEmail());
         
-        UserResponse response = new UserResponse(
+        CreateUserResponse response = new CreateUserResponse(
             user.getId(),
             user.getName(),
             user.getEmail(),

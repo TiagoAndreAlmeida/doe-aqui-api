@@ -1,4 +1,4 @@
-package br.com.doeaqui.user;
+package br.com.doeaqui.infrastructure.persistence.user;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

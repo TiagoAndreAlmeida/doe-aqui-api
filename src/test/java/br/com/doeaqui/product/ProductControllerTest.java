@@ -27,12 +27,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.config.SecurityConfig;
+import br.com.doeaqui.domain.enums.ConditionStatus;
+import br.com.doeaqui.domain.enums.DonationStatus;
 import br.com.doeaqui.exception.GlobalExceptionHandler;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
 import br.com.doeaqui.product.dto.response.ProductResponse;
 import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.product.enums.ConditionStatus;
-import br.com.doeaqui.product.enums.DonationStatus;
 import br.com.doeaqui.user.dto.response.UserSummaryResponse;
 
 @WebMvcTest(ProductController.class)

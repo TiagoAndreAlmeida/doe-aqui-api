@@ -6,9 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import br.com.doeaqui.category.SubCategoryEntity;
-import br.com.doeaqui.product.enums.ConditionStatus;
-import br.com.doeaqui.product.enums.DonationStatus;
-import br.com.doeaqui.user.UserEntity;
+import br.com.doeaqui.domain.enums.ConditionStatus;
+import br.com.doeaqui.domain.enums.DonationStatus;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

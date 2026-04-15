@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.doeaqui.product.exception.ProductNotFoundException;
 import br.com.doeaqui.product.exception.ProductBusinessException;
+import br.com.doeaqui.domain.enums.DonationStatus;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
+import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
 import br.com.doeaqui.product.dto.response.ProductResponse;
 import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.product.enums.DonationStatus;
-import br.com.doeaqui.user.UserEntity;
-import br.com.doeaqui.user.UserRepository;
 import br.com.doeaqui.user.dto.response.UserSummaryResponse;
 
 @Service

@@ -1,4 +1,4 @@
-package br.com.doeaqui.product.enums;
+package br.com.doeaqui.domain.enums;
 
 public enum ConditionStatus {
     NEW,

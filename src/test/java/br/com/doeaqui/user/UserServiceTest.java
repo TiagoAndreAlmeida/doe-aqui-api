@@ -9,7 +9,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
+import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
 import br.com.doeaqui.user.exception.InactiveUserException;

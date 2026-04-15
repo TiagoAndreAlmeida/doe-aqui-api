@@ -1,8 +1,8 @@
-package br.com.doeaqui.user.dto.response;
+package br.com.doeaqui.infrastructure.controllers.user.dto;
 
 import java.time.LocalDateTime;
 
-public record UserResponse(
+public record CreateUserResponse(
     Long id,
     String name,
     String email,

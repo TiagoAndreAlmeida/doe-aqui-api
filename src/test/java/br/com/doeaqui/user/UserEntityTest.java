@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
+
 public class UserEntityTest {
 
     @Test

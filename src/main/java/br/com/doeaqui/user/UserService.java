@@ -1,7 +1,9 @@
 package br.com.doeaqui.user;
 
 import br.com.doeaqui.config.JwtService;
-import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
+import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.user.dto.request.LoginRequest;
 import br.com.doeaqui.user.dto.response.LoginResponse;
 import br.com.doeaqui.user.exception.EmailAlreadyExistsException;

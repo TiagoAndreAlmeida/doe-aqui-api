@@ -15,9 +15,9 @@ import org.springframework.data.domain.PageRequest;
 
 import br.com.doeaqui.category.CategoryEntity;
 import br.com.doeaqui.category.SubCategoryEntity;
-import br.com.doeaqui.product.enums.ConditionStatus;
-import br.com.doeaqui.product.enums.DonationStatus;
-import br.com.doeaqui.user.UserEntity;
+import br.com.doeaqui.domain.enums.ConditionStatus;
+import br.com.doeaqui.domain.enums.DonationStatus;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

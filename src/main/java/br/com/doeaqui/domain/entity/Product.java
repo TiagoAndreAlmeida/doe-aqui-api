@@ -2,10 +2,8 @@ package br.com.doeaqui.domain.entity;
 
 import java.time.LocalDateTime;
 
-import br.com.doeaqui.category.SubCategoryEntity;
-import br.com.doeaqui.product.enums.ConditionStatus;
-import br.com.doeaqui.product.enums.DonationStatus;
-import br.com.doeaqui.user.UserEntity;
+import br.com.doeaqui.domain.enums.ConditionStatus;
+import br.com.doeaqui.domain.enums.DonationStatus;
 
 public class Product {
     private Long id;
@@ -13,9 +11,9 @@ public class Product {
     private String description;
     private ConditionStatus condition;
     private DonationStatus status;
-    private UserEntity donor;
-    private UserEntity receiver;
-    private SubCategoryEntity subcategory;
+    private User donor;
+    private User receiver;
+    private Subcategory subcategory;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -24,7 +22,7 @@ public class Product {
     }
 
     public Product(Long id, String title, String description, ConditionStatus condition, DonationStatus status,
-            UserEntity donor, UserEntity receiver, SubCategoryEntity subcategory, LocalDateTime createdAt,
+            User donor, User receiver, Subcategory subcategory, LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
@@ -78,27 +76,27 @@ public class Product {
         this.status = status;
     }
 
-    public UserEntity getDonor() {
+    public User getDonor() {
         return donor;
     }
 
-    public void setDonor(UserEntity donor) {
+    public void setDonor(User donor) {
         this.donor = donor;
     }
 
-    public UserEntity getReceiver() {
+    public User getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(UserEntity receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
 
-    public SubCategoryEntity getSubcategory() {
+    public Subcategory getSubcategory() {
         return subcategory;
     }
 
-    public void setSubcategory(SubCategoryEntity subcategory) {
+    public void setSubcategory(Subcategory subcategory) {
         this.subcategory = subcategory;
     }
 

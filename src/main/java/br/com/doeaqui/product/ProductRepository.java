@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.doeaqui.product.enums.DonationStatus;
+import br.com.doeaqui.domain.enums.DonationStatus;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     boolean existsBySubcategoryId(Long subcategoryId);
     

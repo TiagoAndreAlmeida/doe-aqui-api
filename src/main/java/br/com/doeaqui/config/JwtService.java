@@ -6,9 +6,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import br.com.doeaqui.user.UserEntity;
 
 @Service
 public class JwtService {

@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.doeaqui.config.SecurityConfig;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.exception.GlobalExceptionHandler;
-import br.com.doeaqui.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.UserController;
+import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
+import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
 
 @WebMvcTest(UserController.class)
