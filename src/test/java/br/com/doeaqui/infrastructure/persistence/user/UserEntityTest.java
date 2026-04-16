@@ -1,4 +1,4 @@
-package br.com.doeaqui.user;
+package br.com.doeaqui.infrastructure.persistence.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;

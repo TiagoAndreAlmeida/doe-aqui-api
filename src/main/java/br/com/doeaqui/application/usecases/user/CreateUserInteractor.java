@@ -3,10 +3,10 @@ package br.com.doeaqui.application.usecases.user;
 import br.com.doeaqui.application.gateways.user.UserGateway;
 import br.com.doeaqui.domain.entity.User;
 
-public class CreateUserInterector {
+public class CreateUserInteractor {
     private UserGateway userGateway;
 
-    public CreateUserInterector(UserGateway userGateway) {
+    public CreateUserInteractor(UserGateway userGateway) {
         this.userGateway = userGateway;
     }
 

@@ -1,5 +1,7 @@
 package br.com.doeaqui.infrastructure.gateways.user;
 
+import java.util.ArrayList;
+
 import br.com.doeaqui.domain.entity.User;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 
@@ -18,7 +20,7 @@ public class UserEntityMapper {
             userEntity.getId(), userEntity.getInactive(),
             userEntity.getEmail(), userEntity.getName(),
             userEntity.getPassword(), userEntity.getPhone(),
-            userEntity.getDonatedProducts(), userEntity.getReceivedProducts(),
+            new ArrayList<>(), new ArrayList<>(),
             userEntity.getCreatedAt(), userEntity.getUpdatedAt()
         );
     }

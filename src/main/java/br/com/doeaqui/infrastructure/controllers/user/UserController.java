@@ -1,6 +1,6 @@
 package br.com.doeaqui.infrastructure.controllers.user;
 
-import br.com.doeaqui.application.usecases.user.CreateUserInterector;
+import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
 import br.com.doeaqui.domain.entity.User;
 import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
 import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserResponse;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final CreateUserInterector createUserInterector;
+    private final CreateUserInteractor createUserInterector;
     private final UserDTOMapper userDTOMapper;
 
-    public UserController(CreateUserInterector createUserInterector, UserDTOMapper userDTOMapper) {
+    public UserController(CreateUserInteractor createUserInterector, UserDTOMapper userDTOMapper) {
         this.createUserInterector = createUserInterector;
         this.userDTOMapper = userDTOMapper;
     }

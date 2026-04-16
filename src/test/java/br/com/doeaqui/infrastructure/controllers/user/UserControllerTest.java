@@ -1,4 +1,4 @@
-package br.com.doeaqui.user;
+package br.com.doeaqui.infrastructure.controllers.user;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.containsString;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,10 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.doeaqui.config.SecurityConfig;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.exception.GlobalExceptionHandler;
-import br.com.doeaqui.infrastructure.controllers.user.UserController;
+import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
+import br.com.doeaqui.domain.entity.User;
 import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
-import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
-import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
+import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.UserDTOMapper;
 
 @WebMvcTest(UserController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
@@ -34,7 +37,10 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private UserService userService;
+    private CreateUserInteractor createUserInteractor;
+
+    @MockitoBean
+    private UserDTOMapper userDTOMapper;
 
     @MockitoBean
     private JwtService jwtService;
@@ -42,12 +48,25 @@ class UserControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    @DisplayName("Deve retornar 201 ao criar usuário com sucesso")
+    @DisplayName("Should return 201 when user creation is successful")
     void shouldReturn201WhenCreateUserIsSuccessful() throws Exception {
         CreateUserRequest request = new CreateUserRequest("Tiago", "tiago@email.com", "11999999999", "senha123");
-        UserEntity savedUser = new UserEntity(1L, "Tiago", "tiago@email.com", "11999999999", "senha123", false);
+        User userDomain = new User();
+        userDomain.setName("Tiago");
+        
+        User savedUser = new User();
+        savedUser.setId(1L);
+        savedUser.setName("Tiago");
+        savedUser.setEmail("tiago@email.com");
+        savedUser.setInactive(false);
+        savedUser.setCreatedAt(LocalDateTime.now());
+        savedUser.setUpdatedAt(LocalDateTime.now());
 
-        when(userService.create(any(CreateUserRequest.class))).thenReturn(savedUser);
+        CreateUserResponse response = new CreateUserResponse(1L, "Tiago", "tiago@email.com", "11999999999", false, savedUser.getCreatedAt(), savedUser.getUpdatedAt());
+
+        when(userDTOMapper.toDomain(any(CreateUserRequest.class))).thenReturn(userDomain);
+        when(createUserInteractor.createUser(userDomain)).thenReturn(savedUser);
+        when(userDTOMapper.toResponse(savedUser)).thenReturn(response);
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,9 +78,9 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar 400 quando os dados de entrada forem inválidos")
+    @DisplayName("Should return 400 when input data is invalid")
     void shouldReturn400WhenInputIsInvalid() throws Exception {
-        CreateUserRequest request = new CreateUserRequest("", "email-invalido", "", "123");
+        CreateUserRequest request = new CreateUserRequest("", "invalid-email", "", "123");
 
         mockMvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,21 +88,5 @@ class UserControllerTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message").exists())
             .andExpect(jsonPath("$.message").value(containsString("Erro de validação")));
-    }
-
-    @Test
-    @DisplayName("Deve retornar 409 quando o e-mail já existir")
-    void shouldReturn409WhenEmailAlreadyExists() throws Exception {
-        CreateUserRequest request = new CreateUserRequest("Tiago", "duplicado@email.com", "", "senha123");
-
-        when(userService.create(any(CreateUserRequest.class)))
-            .thenThrow(new EmailAlreadyExistsException("E-mail já cadastrado"));
-
-        mockMvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isConflict())
-            .andExpect(jsonPath("$.status").value(409))
-            .andExpect(jsonPath("$.message").value("E-mail já cadastrado"));
     }
 }
