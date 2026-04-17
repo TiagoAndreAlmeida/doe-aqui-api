@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +45,6 @@ class UserEntityMapperTest {
     @Test
     @DisplayName("Should map UserEntity to User domain with empty product lists")
     void shouldMapEntityToDomain() {
-        LocalDateTime now = LocalDateTime.now();
         UserEntity entity = new UserEntity(
             1L, "Test User", "test@example.com", "12345", "secret", false
         );
