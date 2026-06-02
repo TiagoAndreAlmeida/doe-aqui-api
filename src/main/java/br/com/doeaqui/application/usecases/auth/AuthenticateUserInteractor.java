@@ -19,23 +19,23 @@ public class AuthenticateUserInteractor {
     }
 
     public String authenticate(String email, String password) {
-        User user;
+        User user = null;
         try {
             user = userGateway.findByEmail(email);
-        } catch (Exception e) {
-            throw new BusinessException("E-mail ou Senha Inválidos", ErrorCode.UNAUTHORIZED);
+        } catch (BusinessException e) {
+            // Silencia o erro para evitar vazamento de informação se o e-mail existe ou não
         }
 
-        if (user.getInactive()) {
-            throw new BusinessException("Usuário inativo", ErrorCode.FORBIDDEN);
+        // Se o usuário não existe ou está inativo, retornamos o mesmo erro genérico
+        if (user == null || user.getInactive()) {
+            throw new BusinessException("E-mail ou senha inválidos", ErrorCode.UNAUTHORIZED);
         }
 
         if (!passwordEncoderGateway.matches(password, user.getPassword())) {
             throw new BusinessException("E-mail ou senha inválidos", ErrorCode.UNAUTHORIZED);
         }
 
-        String token = tokenGateway.generateToken(user);
-        return token;
+        return tokenGateway.generateToken(user);
     }
 
 }
