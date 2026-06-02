@@ -21,13 +21,13 @@ import org.springframework.data.domain.PageRequest;
 
 import br.com.doeaqui.domain.enums.ConditionStatus;
 import br.com.doeaqui.domain.enums.DonationStatus;
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
 import br.com.doeaqui.product.dto.response.ProductResponse;
 import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.product.exception.ProductBusinessException;
-import br.com.doeaqui.product.exception.ProductNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -105,8 +105,8 @@ class ProductServiceTest {
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
         assertThatThrownBy(() -> productService.reserve(productId, donorId))
-            .isInstanceOf(ProductBusinessException.class)
-            .hasMessage("O doador não pode reservar o próprio produto");
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.FORBIDDEN);
     }
 
     @Test
@@ -131,7 +131,8 @@ class ProductServiceTest {
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> productService.findById(1L))
-            .isInstanceOf(ProductNotFoundException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_FOUND);
     }
 
     // Helpers

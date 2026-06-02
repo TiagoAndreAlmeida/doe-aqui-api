@@ -21,10 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.doeaqui.category.dto.request.CreateCategoryRequest;
 import br.com.doeaqui.category.dto.response.CategoryResponse;
 import br.com.doeaqui.category.dto.response.CategorySummaryResponse;
-import br.com.doeaqui.category.exception.CategoryNotEmptyException;
-import br.com.doeaqui.category.exception.CategoryNotFoundException;
-import br.com.doeaqui.category.exception.SlugAlreadyExistsException;
 import br.com.doeaqui.category.mapper.CategoryMapper;
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.util.SlugGenerator;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,7 +79,8 @@ class CategoryServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> categoryService.create(request))
-            .isInstanceOf(SlugAlreadyExistsException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.ALREADY_EXISTS);
         
         verify(categoryRepository, never()).save(any());
     }
@@ -128,7 +128,8 @@ class CategoryServiceTest {
         when(categoryRepository.findBySlug("nao-existe")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> categoryService.findBySlug("nao-existe"))
-            .isInstanceOf(CategoryNotFoundException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_FOUND);
     }
 
     @Test
@@ -161,7 +162,8 @@ class CategoryServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> categoryService.delete(slug))
-            .isInstanceOf(CategoryNotEmptyException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_STATE);
         
         verify(categoryRepository, never()).delete(any());
     }

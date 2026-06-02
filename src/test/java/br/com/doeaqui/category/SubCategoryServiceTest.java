@@ -21,9 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.doeaqui.category.dto.request.CreateSubCategoryRequest;
 import br.com.doeaqui.category.dto.response.SubCategoryResponse;
 import br.com.doeaqui.category.dto.response.SubCategorySummaryResponse;
-import br.com.doeaqui.category.exception.CategoryNotFoundException;
-import br.com.doeaqui.category.exception.SubCategoryNotEmptyException;
 import br.com.doeaqui.category.mapper.SubCategoryMapper;
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.product.ProductRepository;
 import br.com.doeaqui.util.SlugGenerator;
 
@@ -80,7 +80,8 @@ class SubCategoryServiceTest {
         when(categoryRepository.findBySlug("nao-existe")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> subCategoryService.create(request))
-            .isInstanceOf(CategoryNotFoundException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_FOUND);
         
         verify(subCategoryRepository, never()).save(any());
     }
@@ -111,7 +112,8 @@ class SubCategoryServiceTest {
         when(categoryRepository.existsBySlug("fantasma")).thenReturn(false);
 
         assertThatThrownBy(() -> subCategoryService.findByCategorySlug("fantasma"))
-            .isInstanceOf(CategoryNotFoundException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.NOT_FOUND);
     }
 
     @Test
@@ -143,7 +145,8 @@ class SubCategoryServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> subCategoryService.delete(slug))
-            .isInstanceOf(SubCategoryNotEmptyException.class);
+            .isInstanceOf(BusinessException.class)
+            .hasFieldOrPropertyWithValue("errorCode", ErrorCode.INVALID_STATE);
         
         verify(subCategoryRepository, never()).delete(any());
     }

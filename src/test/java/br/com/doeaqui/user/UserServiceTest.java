@@ -9,13 +9,11 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import br.com.doeaqui.domain.execption.BusinessException;
 import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.user.dto.request.LoginRequest;
-import br.com.doeaqui.user.exception.EmailAlreadyExistsException;
-import br.com.doeaqui.user.exception.InactiveUserException;
-import br.com.doeaqui.user.exception.UserNotFoundException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -75,7 +73,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(request.email())).thenReturn(true);
 
         assertThatThrownBy(() -> userService.create(request))
-            .isInstanceOf(EmailAlreadyExistsException.class)
+            .isInstanceOf(BusinessException.class)
             .hasMessage("E-mail já cadastrado");
 
         verify(userRepository).existsByEmail(request.email());
@@ -102,7 +100,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(request.email())).thenReturn(user);
 
         assertThatThrownBy(() -> userService.authenticate(request))
-            .isInstanceOf(InactiveUserException.class)
+            .isInstanceOf(BusinessException.class)
             .hasMessage("Conta inátiva, valide sua conta ou entre em contado com o suporte");
     }
 
@@ -113,7 +111,7 @@ class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.findByEmail(email))
-            .isInstanceOf(UserNotFoundException.class)
+            .isInstanceOf(BusinessException.class)
             .hasMessage("Usuário não encontrado");
     }
 }
