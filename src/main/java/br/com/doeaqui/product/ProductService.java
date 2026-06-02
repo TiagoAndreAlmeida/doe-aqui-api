@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.doeaqui.product.exception.ProductNotFoundException;
-import br.com.doeaqui.product.exception.ProductBusinessException;
 import br.com.doeaqui.domain.enums.DonationStatus;
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
@@ -52,21 +52,21 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductResponse findById(Long id) {
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado com o ID: " + id));
+                .orElseThrow(() -> new BusinessException("Produto não encontrado com o ID: " + id, ErrorCode.NOT_FOUND));
         return toResponse(product);
     }
 
     @Transactional
     public ProductResponse reserve(Long productId, Long receiverId) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+                .orElseThrow(() -> new BusinessException("Produto não encontrado", ErrorCode.NOT_FOUND));
 
         if (!product.getStatus().equals(DonationStatus.AVAILABLE)) {
-            throw new ProductBusinessException("Produto não está disponível para reserva", HttpStatus.BAD_REQUEST);
+            throw new BusinessException("Produto não está disponível para reserva", ErrorCode.INVALID_STATE);
         }
 
         if (product.getDonor().getId().equals(receiverId)) {
-            throw new ProductBusinessException("O doador não pode reservar o próprio produto", HttpStatus.BAD_REQUEST);
+            throw new BusinessException("O doador não pode reservar o próprio produto", ErrorCode.FORBIDDEN);
         }
 
         UserEntity receiver = userRepository.getReferenceById(receiverId);
@@ -79,14 +79,14 @@ public class ProductService {
     @Transactional
     public ProductResponse confirmDonation(Long productId, Long donorId) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+                .orElseThrow(() -> new BusinessException("Produto não encontrado", ErrorCode.NOT_FOUND));
 
         if (!product.getStatus().equals(DonationStatus.RESERVED)) {
-            throw new ProductBusinessException("Produto precisa estar reservado para confirmar a doação", HttpStatus.BAD_REQUEST);
+            throw new BusinessException("Produto precisa estar reservado para confirmar a doação", ErrorCode.INVALID_STATE);
         }
 
         if (!product.getDonor().getId().equals(donorId)) {
-            throw new ProductBusinessException("Apenas o doador pode confirmar a doação", HttpStatus.FORBIDDEN);
+            throw new BusinessException("Apenas o doador pode confirmar a doação", ErrorCode.FORBIDDEN);
         }
 
         product.setStatus(DonationStatus.DONATED);
@@ -97,17 +97,17 @@ public class ProductService {
     @Transactional
     public ProductResponse cancelReservation(Long productId, Long userId) {
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+                .orElseThrow(() -> new BusinessException("Produto não encontrado", ErrorCode.NOT_FOUND));
 
         if (!product.getStatus().equals(DonationStatus.RESERVED)) {
-            throw new ProductBusinessException("Produto não está reservado", HttpStatus.BAD_REQUEST);
+            throw new BusinessException("Produto não está reservado", ErrorCode.INVALID_STATE);
         }
 
         boolean isDonor = product.getDonor().getId().equals(userId);
         boolean isReceiver = product.getReceiver().getId().equals(userId);
 
         if (!isDonor && !isReceiver) {
-            throw new ProductBusinessException("Você não tem permissão para cancelar esta reserva", HttpStatus.FORBIDDEN);
+            throw new BusinessException("Você não tem permissão para cancelar esta reserva", ErrorCode.FORBIDDEN);
         }
 
         product.setStatus(DonationStatus.AVAILABLE);

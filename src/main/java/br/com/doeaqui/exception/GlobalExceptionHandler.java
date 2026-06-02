@@ -8,6 +8,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
+
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -31,13 +34,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex, HttpServletRequest request) {
+        HttpStatus status = resolveHttpStatus(ex.getErrorCode());
         ErrorResponse error = new ErrorResponse(
-            ex.getStatus().value(),
+            status.value(),
             ex.getMessage(),
             LocalDateTime.now(),
             request.getRequestURI()
         );
-        return ResponseEntity.status(ex.getStatus()).body(error);
+        return ResponseEntity.status(status).body(error);
+    }
+
+    private HttpStatus resolveHttpStatus(ErrorCode code) {
+        return switch (code) {
+            case NOT_FOUND -> HttpStatus.NOT_FOUND;
+            case INVALID_STATE -> HttpStatus.BAD_REQUEST;
+            case ALREADY_EXISTS -> HttpStatus.CONFLICT;
+            case UNAUTHORIZED -> HttpStatus.UNAUTHORIZED;
+            case FORBIDDEN -> HttpStatus.FORBIDDEN;
+        };
     }
 
     @ExceptionHandler(org.springframework.security.core.AuthenticationException.class)

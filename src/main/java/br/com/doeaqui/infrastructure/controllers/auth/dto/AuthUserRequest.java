@@ -1,0 +1,16 @@
+package br.com.doeaqui.infrastructure.controllers.auth.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record AuthUserRequest(
+    @NotBlank(message = "O email é obrigatório")
+    @Email(message = "email inválido")
+    @Size(max = 100, message = "O e-mail deve ter no máximo 100 caracteres")
+    String email,
+
+    @NotBlank(message = "O password precisa ser enviada")
+    @Size(min = 6, message = "O password precisa ter no minímo 6 caracteres")
+    String password
+) {}

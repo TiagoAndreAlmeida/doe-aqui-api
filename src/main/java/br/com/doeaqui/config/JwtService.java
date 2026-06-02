@@ -6,7 +6,6 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -23,11 +22,11 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(UserEntity user) {
+    public String generateToken(Long id, String email, String name) {
         return Jwts.builder()
-                .subject(user.getEmail())
-                .claim("id", user.getId())
-                .claim("name", user.getName())
+                .subject(email)
+                .claim("id", id)
+                .claim("name", name)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey())

@@ -8,10 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.doeaqui.category.dto.request.CreateCategoryRequest;
 import br.com.doeaqui.category.dto.response.CategoryResponse;
 import br.com.doeaqui.category.dto.response.CategorySummaryResponse;
-import br.com.doeaqui.category.exception.CategoryNotEmptyException;
-import br.com.doeaqui.category.exception.CategoryNotFoundException;
-import br.com.doeaqui.category.exception.SlugAlreadyExistsException;
 import br.com.doeaqui.category.mapper.CategoryMapper;
+import br.com.doeaqui.domain.execption.BusinessException;
+import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.util.SlugGenerator;
 
 @Service
@@ -37,7 +36,7 @@ public class CategoryService {
         String slug = slugGenerator.generate(request.name());
 
         if (categoryRepository.existsBySlug(slug)) {
-            throw new SlugAlreadyExistsException(slug);
+            throw new BusinessException("Já existe uma categoria com o slug: " + slug, ErrorCode.ALREADY_EXISTS);
         }
 
         CategoryEntity category = new CategoryEntity(request.name(), slug);
@@ -58,17 +57,17 @@ public class CategoryService {
     public CategoryResponse findBySlug(String slug) {
         return categoryRepository.findBySlug(slug)
                 .map(categoryMapper::toResponse)
-                .orElseThrow(() -> new CategoryNotFoundException(slug));
+                .orElseThrow(() -> new BusinessException("Categoria não encontrada com o slug: " + slug, ErrorCode.NOT_FOUND));
     }
 
     @Transactional
     public void delete(String slug) {
         CategoryEntity category = categoryRepository.findBySlug(slug)
-                .orElseThrow(() -> new CategoryNotFoundException(slug));
+                .orElseThrow(() -> new BusinessException("Categoria não encontrada com o slug: " + slug, ErrorCode.NOT_FOUND));
 
         // Regra de Integridade: Não permite excluir se houver subcategorias
         if (!subCategoryRepository.findByCategorySlug(slug).isEmpty()) {
-            throw new CategoryNotEmptyException(category.getName());
+            throw new BusinessException("Não é possível excluir uma categoria que possui subcategorias vinculadas: " + category.getName(), ErrorCode.INVALID_STATE);
         }
 
         categoryRepository.delete(category);
