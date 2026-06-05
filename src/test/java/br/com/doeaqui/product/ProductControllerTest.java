@@ -33,7 +33,7 @@ import br.com.doeaqui.exception.GlobalExceptionHandler;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
 import br.com.doeaqui.product.dto.response.ProductResponse;
 import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.user.dto.response.UserSummaryResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.UserSummaryResponse;
 
 @WebMvcTest(ProductController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})

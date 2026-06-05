@@ -1,10 +1,8 @@
 package br.com.doeaqui.infrastructure.gateways.user;
 
+import java.util.Optional;
 import br.com.doeaqui.application.gateways.user.UserGateway;
 import br.com.doeaqui.domain.entity.User;
-import br.com.doeaqui.domain.execption.BusinessException;
-import br.com.doeaqui.domain.execption.ErrorCode;
-import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 
 public class UserRepositoryGateway implements UserGateway {
@@ -18,9 +16,7 @@ public class UserRepositoryGateway implements UserGateway {
 
     @Override
     public User createUser(User userDomain) {
-        UserEntity userEntity = this.userEntityMapper.toEntity(userDomain);
-        UserEntity saved = userRepository.save(userEntity);
-        return this.userEntityMapper.toDomain(saved);
+        return this.userEntityMapper.toDomain(userRepository.save(this.userEntityMapper.toEntity(userDomain)));
     }
 
     @Override
@@ -29,10 +25,9 @@ public class UserRepositoryGateway implements UserGateway {
     }
 
     @Override
-    public User findByEmail(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-        .orElseThrow(() -> new BusinessException("Usuário não encontrado", ErrorCode.NOT_FOUND));
-        return userEntityMapper.toDomain(userEntity);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(userEntityMapper::toDomain);
     }
 
 }

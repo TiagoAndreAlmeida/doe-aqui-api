@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import br.com.doeaqui.domain.enums.ConditionStatus;
 import br.com.doeaqui.domain.enums.DonationStatus;
-import br.com.doeaqui.user.dto.response.UserSummaryResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.UserSummaryResponse;
 
 public record ProductResponse(
     Long id,

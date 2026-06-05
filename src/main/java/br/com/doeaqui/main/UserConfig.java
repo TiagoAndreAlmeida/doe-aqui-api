@@ -5,6 +5,7 @@ import br.com.doeaqui.application.gateways.token.TokenGateway;
 import br.com.doeaqui.application.gateways.user.UserGateway;
 import br.com.doeaqui.application.usecases.auth.AuthenticateUserInteractor;
 import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
+import br.com.doeaqui.application.usecases.user.GetUserByEmailInteractor;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.infrastructure.controllers.user.dto.UserDTOMapper;
 import br.com.doeaqui.infrastructure.gateways.password.Argon2PasswordEncoderGateway;
@@ -26,6 +27,11 @@ public class UserConfig {
     @Bean
     AuthenticateUserInteractor authenticateUserInteractor(UserGateway userGateway, PasswordEncoderGateway passwordEncoderGateway, TokenGateway tokenGateway) {
         return new AuthenticateUserInteractor(userGateway, passwordEncoderGateway, tokenGateway);
+    }
+
+    @Bean
+    GetUserByEmailInteractor getUserByEmailInteractor(UserGateway userGateway) {
+        return new GetUserByEmailInteractor(userGateway);
     }
 
     @Bean

@@ -14,7 +14,7 @@ import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
 import br.com.doeaqui.product.dto.request.CreateProductRequest;
 import br.com.doeaqui.product.dto.response.ProductResponse;
 import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.user.dto.response.UserSummaryResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.UserSummaryResponse;
 
 @Service
 public class ProductService {

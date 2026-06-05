@@ -1,4 +1,4 @@
-package br.com.doeaqui.user.dto.response;
+package br.com.doeaqui.infrastructure.controllers.user.dto;
 
 public record UserSummaryResponse(
     String name,

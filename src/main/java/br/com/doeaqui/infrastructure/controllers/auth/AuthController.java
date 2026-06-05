@@ -25,22 +25,5 @@ public class AuthController {
         AuthUserResponse response = new AuthUserResponse(token, "Bearer");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-    // @GetMapping("/me")
-    // public ResponseEntity<CreateUserResponse> me(@AuthenticationPrincipal UserEntity principal) {
-    //     UserEntity user = userService.findByEmail(principal.getEmail());
-        
-    //     CreateUserResponse response = new CreateUserResponse(
-    //         user.getId(),
-    //         user.getName(),
-    //         user.getEmail(),
-    //         user.getPhone(),
-    //         user.getInactive(),
-    //         user.getCreatedAt(),
-    //         user.getUpdatedAt()
-    //     );
-        
-    //     return ResponseEntity.ok(response);
-    // }
 }
 

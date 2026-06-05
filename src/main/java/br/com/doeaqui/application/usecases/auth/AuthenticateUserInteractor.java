@@ -1,5 +1,7 @@
 package br.com.doeaqui.application.usecases.auth;
 
+import java.util.Optional;
+
 import br.com.doeaqui.application.gateways.password.PasswordEncoderGateway;
 import br.com.doeaqui.application.gateways.token.TokenGateway;
 import br.com.doeaqui.application.gateways.user.UserGateway;
@@ -19,17 +21,9 @@ public class AuthenticateUserInteractor {
     }
 
     public String authenticate(String email, String password) {
-        User user = null;
-        try {
-            user = userGateway.findByEmail(email);
-        } catch (BusinessException e) {
-            // Silencia o erro para evitar vazamento de informação se o e-mail existe ou não
-        }
-
-        // Se o usuário não existe ou está inativo, retornamos o mesmo erro genérico
-        if (user == null || user.getInactive()) {
-            throw new BusinessException("E-mail ou senha inválidos", ErrorCode.UNAUTHORIZED);
-        }
+        User user = userGateway.findByEmail(email)
+                .filter(u -> !u.getInactive())
+                .orElseThrow(() -> new BusinessException("E-mail ou senha inválidos", ErrorCode.UNAUTHORIZED));
 
         if (!passwordEncoderGateway.matches(password, user.getPassword())) {
             throw new BusinessException("E-mail ou senha inválidos", ErrorCode.UNAUTHORIZED);

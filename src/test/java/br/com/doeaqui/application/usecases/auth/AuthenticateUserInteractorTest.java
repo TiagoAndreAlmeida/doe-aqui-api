@@ -18,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 @ExtendWith(MockitoExtension.class)
 class AuthenticateUserInteractorTest {
 
@@ -50,7 +52,7 @@ class AuthenticateUserInteractorTest {
         user.setPassword("hashed_password");
         user.setInactive(false);
 
-        when(userGateway.findByEmail(email)).thenReturn(user);
+        when(userGateway.findByEmail(email)).thenReturn(Optional.of(user));
         when(passwordEncoderGateway.matches(password, "hashed_password")).thenReturn(true);
         when(tokenGateway.generateToken(user)).thenReturn(expectedToken);
 
@@ -69,7 +71,7 @@ class AuthenticateUserInteractorTest {
     void shouldThrowGenericExceptionWhenUserNotFound() {
         // Arrange
         String email = "notfound@example.com";
-        when(userGateway.findByEmail(email)).thenThrow(new BusinessException("Usuário não encontrado", ErrorCode.NOT_FOUND));
+        when(userGateway.findByEmail(email)).thenReturn(Optional.empty());
 
         // Act & Assert
         BusinessException exception = assertThrows(BusinessException.class, 
@@ -91,7 +93,7 @@ class AuthenticateUserInteractorTest {
         user.setPassword("hashed_password");
         user.setInactive(false);
 
-        when(userGateway.findByEmail(email)).thenReturn(user);
+        when(userGateway.findByEmail(email)).thenReturn(Optional.of(user));
         when(passwordEncoderGateway.matches(password, "hashed_password")).thenReturn(false);
 
         // Act & Assert
@@ -112,22 +114,7 @@ class AuthenticateUserInteractorTest {
         user.setEmail(email);
         user.setInactive(true);
 
-        when(userGateway.findByEmail(email)).thenReturn(user);
-
-        // Act & Assert
-        BusinessException exception = assertThrows(BusinessException.class, 
-            () -> authenticateUserInteractor.authenticate(email, "any_password"));
-        
-        assertEquals(ErrorCode.UNAUTHORIZED, exception.getErrorCode());
-        assertEquals("E-mail ou senha inválidos", exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("Deve tratar retorno nulo do gateway como erro genérico de autenticação")
-    void shouldHandleNullUserAsGenericAuthenticationError() {
-        // Arrange
-        String email = "nulluser@example.com";
-        when(userGateway.findByEmail(email)).thenReturn(null);
+        when(userGateway.findByEmail(email)).thenReturn(Optional.of(user));
 
         // Act & Assert
         BusinessException exception = assertThrows(BusinessException.class, 
