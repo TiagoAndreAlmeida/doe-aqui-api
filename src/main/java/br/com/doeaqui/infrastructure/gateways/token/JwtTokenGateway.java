@@ -13,6 +13,9 @@ public class JwtTokenGateway implements TokenGateway {
 
     @Override
     public String generateToken(User user) {
+        if (user == null || user.getId() == null) {
+            throw new IllegalStateException("O usuário deve estar persistido (possuir ID) para gerar um token");
+        }
         return jwtService.generateToken(user.getId(), user.getEmail(), user.getName());
     }
 
