@@ -1,7 +1,5 @@
 package br.com.doeaqui.application.usecases.auth;
 
-import java.util.Optional;
-
 import br.com.doeaqui.application.gateways.password.PasswordEncoderGateway;
 import br.com.doeaqui.application.gateways.token.TokenGateway;
 import br.com.doeaqui.application.gateways.user.UserGateway;
