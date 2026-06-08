@@ -1,7 +1,12 @@
 package br.com.doeaqui.infrastructure.controllers.user.dto;
 
-import br.com.doeaqui.domain.entity.User;
+import org.springframework.stereotype.Component;
 
+import br.com.doeaqui.domain.entity.User;
+import br.com.doeaqui.infrastructure.controllers.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.dto.response.CreateUserResponse;
+
+@Component
 public class UserDTOMapper {
     public CreateUserResponse toResponse(User user) {
         return new CreateUserResponse(

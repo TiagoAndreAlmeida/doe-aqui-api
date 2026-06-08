@@ -31,9 +31,9 @@ import br.com.doeaqui.application.usecases.user.GetUserByEmailInteractor;
 import br.com.doeaqui.domain.entity.User;
 import br.com.doeaqui.domain.execption.BusinessException;
 import br.com.doeaqui.domain.execption.ErrorCode;
-import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserRequest;
-import br.com.doeaqui.infrastructure.controllers.user.dto.CreateUserResponse;
 import br.com.doeaqui.infrastructure.controllers.user.dto.UserDTOMapper;
+import br.com.doeaqui.infrastructure.controllers.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.dto.response.CreateUserResponse;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 
 @WebMvcTest(UserController.class)

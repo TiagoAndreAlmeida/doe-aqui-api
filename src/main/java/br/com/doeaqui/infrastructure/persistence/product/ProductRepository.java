@@ -1,4 +1,4 @@
-package br.com.doeaqui.product;
+package br.com.doeaqui.infrastructure.persistence.product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

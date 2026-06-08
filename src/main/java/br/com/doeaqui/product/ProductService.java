@@ -8,12 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.doeaqui.domain.enums.DonationStatus;
 import br.com.doeaqui.domain.execption.BusinessException;
 import br.com.doeaqui.domain.execption.ErrorCode;
+import br.com.doeaqui.infrastructure.controllers.product.dto.response.ProductResponse;
+import br.com.doeaqui.infrastructure.controllers.product.dto.response.ProductSummaryResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.response.UserSummaryResponse;
+import br.com.doeaqui.infrastructure.persistence.product.ProductEntity;
+import br.com.doeaqui.infrastructure.persistence.product.ProductRepository;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
-import br.com.doeaqui.product.dto.request.CreateProductRequest;
-import br.com.doeaqui.product.dto.response.ProductResponse;
-import br.com.doeaqui.product.dto.response.ProductSummaryResponse;
-import br.com.doeaqui.infrastructure.controllers.user.dto.UserSummaryResponse;
 
 @Service
 public class ProductService {
@@ -24,22 +25,6 @@ public class ProductService {
     public ProductService(ProductRepository productRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
-    }
-
-    @Transactional
-    public ProductResponse create(CreateProductRequest request, Long donorId) {
-        UserEntity donor = userRepository.getReferenceById(donorId);
-
-        ProductEntity product = new ProductEntity(
-            null,
-            request.title(),
-            request.description(),
-            request.condition(),
-            DonationStatus.AVAILABLE,
-            donor
-        );
-
-        return toResponse(productRepository.save(product));
     }
 
     @Transactional(readOnly = true)

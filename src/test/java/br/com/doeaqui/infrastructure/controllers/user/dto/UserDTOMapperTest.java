@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import br.com.doeaqui.domain.entity.User;
+import br.com.doeaqui.infrastructure.controllers.user.dto.request.CreateUserRequest;
+import br.com.doeaqui.infrastructure.controllers.user.dto.response.CreateUserResponse;
 
 class UserDTOMapperTest {
 

@@ -1,10 +1,10 @@
-package br.com.doeaqui.product.dto.response;
+package br.com.doeaqui.infrastructure.controllers.product.dto.response;
 
 import java.time.LocalDateTime;
 
 import br.com.doeaqui.domain.enums.ConditionStatus;
 import br.com.doeaqui.domain.enums.DonationStatus;
-import br.com.doeaqui.infrastructure.controllers.user.dto.UserSummaryResponse;
+import br.com.doeaqui.infrastructure.controllers.user.dto.response.UserSummaryResponse;
 
 public record ProductResponse(
     Long id,

@@ -7,4 +7,5 @@ public interface UserGateway {
     User createUser(User user);
     boolean existsByEmail(String email);
     Optional<User> findByEmail(String email);
+    Optional<User> findById(Long userId);
 }

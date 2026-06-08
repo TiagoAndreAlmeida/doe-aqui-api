@@ -1,4 +1,4 @@
-package br.com.doeaqui.product.dto.response;
+package br.com.doeaqui.infrastructure.controllers.product.dto.response;
 
 import br.com.doeaqui.domain.enums.ConditionStatus;
 import br.com.doeaqui.domain.enums.DonationStatus;

@@ -16,6 +16,15 @@ public class Category {
     public Category() {
     }
 
+    public Category(long id, String name, String slug) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.subcategories = new ArrayList<>();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public Category(long id, String name, String slug, List<Subcategory> subcategories, LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;

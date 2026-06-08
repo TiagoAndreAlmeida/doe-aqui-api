@@ -1,4 +1,4 @@
-package br.com.doeaqui.infrastructure.controllers.user.dto;
+package br.com.doeaqui.infrastructure.controllers.user.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

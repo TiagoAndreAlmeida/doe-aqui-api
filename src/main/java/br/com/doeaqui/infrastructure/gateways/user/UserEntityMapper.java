@@ -2,11 +2,14 @@ package br.com.doeaqui.infrastructure.gateways.user;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Component;
+
 import br.com.doeaqui.domain.entity.User;
 import br.com.doeaqui.infrastructure.persistence.user.UserEntity;
 
+@Component
 public class UserEntityMapper {
-    UserEntity toEntity(User userDomain) {
+    public UserEntity toEntity(User userDomain) {
         return new UserEntity(
             userDomain.getId(),
             userDomain.getName(), userDomain.getEmail(),
@@ -15,7 +18,7 @@ public class UserEntityMapper {
         );
     }
 
-    User toDomain(UserEntity userEntity) {
+    public User toDomain(UserEntity userEntity) {
         return new User(
             userEntity.getId(), userEntity.getInactive(),
             userEntity.getEmail(), userEntity.getName(),

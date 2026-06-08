@@ -1,4 +1,4 @@
-package br.com.doeaqui.product.dto.request;
+package br.com.doeaqui.infrastructure.controllers.product.dto.request;
 
 import br.com.doeaqui.domain.enums.ConditionStatus;
 import jakarta.validation.constraints.NotBlank;

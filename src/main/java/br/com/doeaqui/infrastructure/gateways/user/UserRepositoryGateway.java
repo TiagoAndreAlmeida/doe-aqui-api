@@ -30,4 +30,10 @@ public class UserRepositoryGateway implements UserGateway {
                 .map(userEntityMapper::toDomain);
     }
 
+    @Override
+    public Optional<User> findById(Long userId) {
+       return userRepository.findById(userId)
+       .map(userEntityMapper::toDomain);
+    }
+
 }

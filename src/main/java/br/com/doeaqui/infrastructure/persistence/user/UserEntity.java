@@ -9,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import br.com.doeaqui.product.ProductEntity;
+import br.com.doeaqui.infrastructure.persistence.product.ProductEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

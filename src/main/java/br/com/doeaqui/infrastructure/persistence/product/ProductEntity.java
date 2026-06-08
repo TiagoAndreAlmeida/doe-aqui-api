@@ -1,4 +1,4 @@
-package br.com.doeaqui.product;
+package br.com.doeaqui.infrastructure.persistence.product;
 
 import java.time.LocalDateTime;
 
@@ -71,7 +71,7 @@ public class ProductEntity {
         this.donor = donor;
     }
 
-    protected ProductEntity() {
+    public ProductEntity() {
     }
 
     public Long getId() {
