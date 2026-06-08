@@ -8,7 +8,6 @@ import br.com.doeaqui.application.usecases.auth.AuthenticateUserInteractor;
 import br.com.doeaqui.application.usecases.product.CreateProductInteractor;
 import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
 import br.com.doeaqui.application.usecases.user.GetUserByEmailInteractor;
-import br.com.doeaqui.category.mapper.SubCategoryMapper;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.infrastructure.controllers.product.dto.ProductDTOMapper;
 import br.com.doeaqui.infrastructure.controllers.user.dto.UserDTOMapper;
