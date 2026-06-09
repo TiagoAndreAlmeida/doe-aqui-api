@@ -6,15 +6,16 @@ import org.springframework.stereotype.Component;
 import br.com.doeaqui.category.SubCategoryEntity;
 import br.com.doeaqui.category.dto.response.SubCategoryResponse;
 import br.com.doeaqui.category.dto.response.SubCategorySummaryResponse;
+import br.com.doeaqui.infrastructure.gateways.category.CategoryEntityMapper;
 import br.com.doeaqui.infrastructure.gateways.product.ProductEntityMapper;
 
 @Component
 public class SubCategoryMapper {
 
-    private final CategoryMapper categoryMapper;
+    private final CategoryEntityMapper categoryMapper;
     private final ProductEntityMapper productEntityMapper;
 
-    public SubCategoryMapper(CategoryMapper categoryMapper, @Lazy ProductEntityMapper productEntityMapper) {
+    public SubCategoryMapper(CategoryEntityMapper categoryMapper, @Lazy ProductEntityMapper productEntityMapper) {
         this.categoryMapper = categoryMapper;
         this.productEntityMapper = productEntityMapper;
     }
