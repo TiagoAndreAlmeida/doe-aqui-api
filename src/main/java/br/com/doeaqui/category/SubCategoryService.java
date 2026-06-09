@@ -11,8 +11,10 @@ import br.com.doeaqui.category.dto.response.SubCategorySummaryResponse;
 import br.com.doeaqui.category.mapper.SubCategoryMapper;
 import br.com.doeaqui.domain.execption.BusinessException;
 import br.com.doeaqui.domain.execption.ErrorCode;
+import br.com.doeaqui.domain.service.SlugGenerator;
+import br.com.doeaqui.infrastructure.persistence.category.CategoryEntity;
+import br.com.doeaqui.infrastructure.persistence.category.CategoryRepository;
 import br.com.doeaqui.infrastructure.persistence.product.ProductRepository;
-import br.com.doeaqui.util.SlugGenerator;
 
 @Service
 public class SubCategoryService {

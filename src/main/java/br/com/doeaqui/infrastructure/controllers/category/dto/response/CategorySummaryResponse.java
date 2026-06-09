@@ -1,4 +1,4 @@
-package br.com.doeaqui.category.dto.response;
+package br.com.doeaqui.infrastructure.controllers.category.dto.response;
 
 import java.time.LocalDateTime;
 

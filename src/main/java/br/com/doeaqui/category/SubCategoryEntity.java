@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import br.com.doeaqui.infrastructure.persistence.category.CategoryEntity;
 import br.com.doeaqui.infrastructure.persistence.product.ProductEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package br.com.doeaqui.util;
+package br.com.doeaqui.domain.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

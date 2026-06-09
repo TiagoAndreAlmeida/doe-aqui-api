@@ -1,4 +1,4 @@
-package br.com.doeaqui.category.dto.request;
+package br.com.doeaqui.infrastructure.controllers.category.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -1,4 +1,4 @@
-package br.com.doeaqui.category;
+package br.com.doeaqui.infrastructure.persistence.category;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import br.com.doeaqui.category.SubCategoryEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +44,16 @@ public class CategoryEntity {
         this.id = id;
         this.name = name;
         this.slug = slug;
+    }
+
+    public CategoryEntity(long id, String name, String slug, List<SubCategoryEntity> subcategories, 
+                          LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.subcategories = subcategories;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public CategoryEntity(String name, String slug) {

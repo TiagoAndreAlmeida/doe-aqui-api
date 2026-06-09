@@ -1,4 +1,4 @@
-package br.com.doeaqui.category;
+package br.com.doeaqui.infrastructure.persistence.category;
 
 import java.util.Optional;
 
