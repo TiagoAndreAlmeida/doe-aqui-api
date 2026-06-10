@@ -12,7 +12,6 @@ import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
 import br.com.doeaqui.application.usecases.user.GetUserByEmailInteractor;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.domain.service.SlugGenerator;
-import br.com.doeaqui.infrastructure.controllers.product.dto.ProductDTOMapper;
 import br.com.doeaqui.infrastructure.controllers.user.dto.UserDTOMapper;
 import br.com.doeaqui.infrastructure.gateways.category.CategoryEntityMapper;
 import br.com.doeaqui.infrastructure.gateways.category.CategoryRepositoryGateway;
@@ -25,8 +24,6 @@ import br.com.doeaqui.infrastructure.gateways.user.UserRepositoryGateway;
 import br.com.doeaqui.infrastructure.persistence.category.CategoryRepository;
 import br.com.doeaqui.infrastructure.persistence.product.ProductRepository;
 import br.com.doeaqui.infrastructure.persistence.user.UserRepository;
-
-import java.util.Locale.Category;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
