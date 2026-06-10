@@ -34,14 +34,6 @@ public class CategoryService {
     }
 
     // @Transactional(readOnly = true)
-    // public List<CategorySummaryResponse> findAll() {
-    //     return categoryRepository.findAll()
-    //             .stream()
-    //             .map(categoryMapper::toSummaryResponse)
-    //             .toList();
-    // }
-
-    // @Transactional(readOnly = true)
     // public CategoryResponse findBySlug(String slug) {
     //     return categoryRepository.findBySlug(slug)
     //             .map(categoryMapper::toResponse)
