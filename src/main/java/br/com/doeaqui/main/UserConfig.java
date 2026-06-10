@@ -7,6 +7,7 @@ import br.com.doeaqui.application.gateways.token.TokenGateway;
 import br.com.doeaqui.application.gateways.user.UserGateway;
 import br.com.doeaqui.application.usecases.auth.AuthenticateUserInteractor;
 import br.com.doeaqui.application.usecases.category.CreateCategoryInteractor;
+import br.com.doeaqui.application.usecases.category.ListCategoryInteractor;
 import br.com.doeaqui.application.usecases.product.CreateProductInteractor;
 import br.com.doeaqui.application.usecases.user.CreateUserInteractor;
 import br.com.doeaqui.application.usecases.user.GetUserByEmailInteractor;
@@ -82,6 +83,11 @@ public class UserConfig {
     @Bean
     CreateCategoryInteractor createCategoryInteractor(SlugGenerator slugGenerator, CategoryGateway categoryGateway) {
         return new CreateCategoryInteractor(slugGenerator, categoryGateway);
+    }
+
+    @Bean
+    ListCategoryInteractor listCategoryInteractor(CategoryGateway categoryGateway) {
+        return new ListCategoryInteractor(categoryGateway);
     }
 
     @Bean
