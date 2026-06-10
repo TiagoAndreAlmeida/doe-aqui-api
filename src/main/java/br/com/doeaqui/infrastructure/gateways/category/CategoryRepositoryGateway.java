@@ -26,14 +26,14 @@ public class CategoryRepositoryGateway implements CategoryGateway {
 
     @Override
     public Optional<Category> findBySlug(String slug) {
-        return categoryRepository.findBySlug(slug)
+        return this.categoryRepository.findBySlug(slug)
                 .map(categoryEntityMapper::toDomain);
     }
 
     @Override
     public List<Category> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        List<CategoryEntity> entities = this.categoryRepository.findAll();
+        return entities.stream().map(this.categoryEntityMapper::toDomain).toList();
     }
 
     @Override
