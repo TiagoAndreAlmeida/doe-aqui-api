@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.doeaqui.application.usecases.category.CreateCategoryInteractor;
+import br.com.doeaqui.application.usecases.category.FindCategoryBySlugInteractor;
 import br.com.doeaqui.application.usecases.category.ListCategoryInteractor;
 import br.com.doeaqui.config.JwtService;
 import br.com.doeaqui.config.SecurityConfig;
@@ -51,6 +52,9 @@ class CategoryControllerTest {
 
     @MockitoBean
     private ListCategoryInteractor listCategoryInteractor;
+
+    @MockitoBean
+    private FindCategoryBySlugInteractor findCategoryBySlugInteractor;
 
     @MockitoBean
     private CategoryDTOMapper categoryDTOMapper;
@@ -112,6 +116,45 @@ class CategoryControllerTest {
             .andExpect(jsonPath("$.length()").value(2))
             .andExpect(jsonPath("$[0].name").value("Roupas"))
             .andExpect(jsonPath("$[1].name").value("Móveis"));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 200 e a categoria quando buscar por slug existente")
+    void shouldReturnOkAndCategoryWhenSlugExists() throws Exception {
+        String slug = "eletronicos";
+        Category domain = new Category();
+        domain.setId(1L);
+        domain.setName("Eletrônicos");
+        domain.setSlug(slug);
+
+        CategoryResponse response = new CategoryResponse(1L, "Eletrônicos", slug, LocalDateTime.now(), LocalDateTime.now());
+
+        when(findCategoryBySlugInteractor.execute(slug)).thenReturn(domain);
+        when(categoryDTOMapper.toResponse(domain)).thenReturn(response);
+
+        mockMvc.perform(get("/categories/{slug}", slug)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.slug").value(slug))
+            .andExpect(jsonPath("$.name").value("Eletrônicos"));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando o slug da categoria não existir")
+    void shouldReturnNotFoundWhenSlugDoesNotExist() throws Exception {
+        String slug = "inexistente";
+        String expectedMessage = "Categoria não encontrada com o slug: " + slug;
+
+        when(findCategoryBySlugInteractor.execute(slug))
+            .thenThrow(new BusinessException(expectedMessage, ErrorCode.NOT_FOUND));
+
+        mockMvc.perform(get("/categories/{slug}", slug)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.status").value(404))
+            .andExpect(jsonPath("$.message").value(expectedMessage))
+            .andExpect(jsonPath("$.path").value("/categories/" + slug))
+            .andExpect(jsonPath("$.timestamp").exists());
     }
 
     @Test

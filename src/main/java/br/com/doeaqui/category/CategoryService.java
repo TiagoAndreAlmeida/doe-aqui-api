@@ -1,18 +1,8 @@
 package br.com.doeaqui.category;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.com.doeaqui.domain.execption.BusinessException;
-import br.com.doeaqui.domain.execption.ErrorCode;
 import br.com.doeaqui.domain.service.SlugGenerator;
 import br.com.doeaqui.infrastructure.controllers.category.dto.CategoryDTOMapper;
-import br.com.doeaqui.infrastructure.controllers.category.dto.request.CreateCategoryRequest;
-import br.com.doeaqui.infrastructure.controllers.category.dto.response.CategoryResponse;
-import br.com.doeaqui.infrastructure.controllers.category.dto.response.CategorySummaryResponse;
-import br.com.doeaqui.infrastructure.persistence.category.CategoryEntity;
 import br.com.doeaqui.infrastructure.persistence.category.CategoryRepository;
 
 @Service
