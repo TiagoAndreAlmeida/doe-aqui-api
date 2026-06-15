@@ -2,7 +2,9 @@ package br.com.doeaqui.infrastructure.controllers.category;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.doeaqui.application.usecases.category.CreateCategoryInteractor;
+import br.com.doeaqui.application.usecases.category.DeleteCategoryInteractor;
 import br.com.doeaqui.application.usecases.category.FindCategoryBySlugInteractor;
 import br.com.doeaqui.application.usecases.category.ListCategoryInteractor;
 import br.com.doeaqui.config.JwtService;
@@ -57,10 +60,13 @@ class CategoryControllerTest {
     private FindCategoryBySlugInteractor findCategoryBySlugInteractor;
 
     @MockitoBean
+    private DeleteCategoryInteractor deleteCategoryInteractor;
+
+    @MockitoBean
     private CategoryDTOMapper categoryDTOMapper;
 
     @MockitoBean
-    private JwtService jwtService; // Necessário para o SecurityConfig
+    private JwtService jwtService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -191,5 +197,32 @@ class CategoryControllerTest {
             .andExpect(status().isConflict())
             .andExpect(jsonPath("$.status").value(409))
             .andExpect(jsonPath("$.message").value(containsString("repetida")));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 204 quando deletar categoria com sucesso")
+    void shouldReturnNoContentWhenDeleteIsSuccessful() throws Exception {
+        String slug = "deletar-isso";
+        UserEntity principal = new UserEntity(1L, "Admin", "admin@test.com", "pass", "123", false);
+
+        mockMvc.perform(delete("/categories/{slug}", slug)
+                .with(authentication(new UsernamePasswordAuthenticationToken(principal, null, null))))
+            .andExpect(status().isNoContent());
+
+        verify(deleteCategoryInteractor).execute(slug);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando tentar deletar categoria inexistente")
+    void shouldReturnNotFoundWhenDeletingInexistentCategory() throws Exception {
+        String slug = "nao-existe";
+        UserEntity principal = new UserEntity(1L, "Admin", "admin@test.com", "pass", "123", false);
+
+        org.mockito.Mockito.doThrow(new BusinessException("Categoria não encontrada", ErrorCode.NOT_FOUND))
+            .when(deleteCategoryInteractor).execute(slug);
+
+        mockMvc.perform(delete("/categories/{slug}", slug)
+                .with(authentication(new UsernamePasswordAuthenticationToken(principal, null, null))))
+            .andExpect(status().isNotFound());
     }
 }

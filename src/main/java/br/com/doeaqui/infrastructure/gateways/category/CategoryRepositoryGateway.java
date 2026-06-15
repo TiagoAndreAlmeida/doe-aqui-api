@@ -37,9 +37,8 @@ public class CategoryRepositoryGateway implements CategoryGateway {
     }
 
     @Override
-    public void deleteBySlug(String slug) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteBySlug'");
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
     }
 
     @Override

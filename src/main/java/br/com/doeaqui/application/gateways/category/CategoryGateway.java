@@ -8,6 +8,6 @@ public interface CategoryGateway {
     Category createCategory(Category category);
     Optional<Category> findBySlug(String slug);
     List<Category> findAll();
-    void deleteBySlug(String slug);
+    void deleteById(Long id);
     boolean existsBySlug(String slug);
 }

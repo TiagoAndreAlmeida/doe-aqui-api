@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.doeaqui.application.usecases.category.CreateCategoryInteractor;
+import br.com.doeaqui.application.usecases.category.DeleteCategoryInteractor;
 import br.com.doeaqui.application.usecases.category.FindCategoryBySlugInteractor;
 import br.com.doeaqui.application.usecases.category.ListCategoryInteractor;
 import br.com.doeaqui.domain.entity.Category;
@@ -28,16 +30,19 @@ public class CategoryController {
     private CreateCategoryInteractor createCategoryInteractor;
     private ListCategoryInteractor listCategoryInteractor;
     private FindCategoryBySlugInteractor findCategoryBySlugInteractor;
+    private DeleteCategoryInteractor deleteCategoryInteractor;
     private CategoryDTOMapper categoryDTOMapper;
 
     public CategoryController(
         CreateCategoryInteractor createCategoryInteractor, CategoryDTOMapper categoryDTOMapper,
-        ListCategoryInteractor listCategoryInteractor, FindCategoryBySlugInteractor findCategoryBySlugInteractor
+        ListCategoryInteractor listCategoryInteractor, FindCategoryBySlugInteractor findCategoryBySlugInteractor,
+        DeleteCategoryInteractor deleteCategoryInteractor
     ) {
         this.createCategoryInteractor = createCategoryInteractor;
         this.categoryDTOMapper = categoryDTOMapper;
         this.listCategoryInteractor = listCategoryInteractor;
         this.findCategoryBySlugInteractor = findCategoryBySlugInteractor;
+        this.deleteCategoryInteractor = deleteCategoryInteractor;
     }
 
     @PostMapping
@@ -67,9 +72,9 @@ public class CategoryController {
     //     return ResponseEntity.ok(subCategoryService.findByCategorySlug(slug));
     // }
 
-    // @DeleteMapping("/{slug}")
-    // public ResponseEntity<Void> delete(@PathVariable String slug) {
-    //     categoryService.delete(slug);
-    //     return ResponseEntity.noContent().build();
-    // }
+    @DeleteMapping("/{slug}")
+    public ResponseEntity<Void> delete(@PathVariable String slug) {
+        this.deleteCategoryInteractor.execute(slug);
+        return ResponseEntity.noContent().build();
+    }
 }
